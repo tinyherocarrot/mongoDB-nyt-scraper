@@ -10,7 +10,7 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 
 // Require all models
-var db = require("./models");
+// var db = require("./models");
 
 var port = process.env.PORT || 3000;
 
@@ -77,4 +77,9 @@ app.get("/scrape", function(req, res) {
 				});
 		});
 	});
+});
+
+// Start the server
+app.listen(port, function() {
+	console.log("App running on port " + port + "!");
 });
