@@ -52,8 +52,30 @@ $(document).ready(function() {
 					`<p class="text-muted">Be the first to comment!</p>`
 				);
 			}
+			// Set comment submit buttons data-id to article's id
+			console.log("before setting button data-id", results._id);
+			$("button.post-comment").attr("data-id", results._id);
 			// then display modal
 			$(".comments-modal").addClass("is-active");
+		});
+	});
+	// Posts a comment to DB, and to the comments modal
+	$(document).on("click", ".post-comment", function(event) {
+		event.preventDefault();
+		var id = $(this).attr("data-id");
+		console.log("post a comment was clicked");
+		var body = $("#comment_body")
+			.val()
+			.trim();
+		$.ajax({
+			url: `/comments/${id}`,
+			type: "POST",
+			data: {
+				body: body
+			}
+		}).done(results => {
+			console.log(results);
+			$("#comments-container").prepend(`<p>${body}</p><br>`);
 		});
 	});
 	// Close comments modal
