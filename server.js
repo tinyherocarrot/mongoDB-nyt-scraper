@@ -128,7 +128,9 @@ app.get("/comments/:id", function(req, res) {
 	db.Article
 		.findOne({ _id: req.params.id })
 		.populate("comments")
+		// .sort({ _id: "desc" })
 		.then(dbArticles => {
+			console.log(dbArticles);
 			res.json(dbArticles);
 		})
 		.catch(err => res.json(err));
