@@ -31,14 +31,22 @@ $(document).ready(function() {
 	$(document).on("click", ".toggle-comments", function() {
 		var id = $(this).attr("data-id");
 		console.log("show comments was clicked");
-		$("comments-modal").addClass("is-active");
-		$.ajax({
-			url: `/comments/${id}`,
-			type: "GET"
-		});
+		$(".comments-modal").addClass("is-active");
+		// $.ajax({
+		// 	url: `/comments/${id}`,
+		// 	type: "GET"
+		// })
+		// .done(results => {
+
+		// })
 	});
 	// Close comments modal
-	// $(document).on("click", ".modal-close", function() {
-
-	// })
+	$(document).on("click", ".modal-close", function() {
+		console.log("hide comments was clicked");
+		$(".comments-modal").removeClass("is-active");
+	});
+	$(document).on("click", ".modal-background", function() {
+		console.log("hide comments was clicked");
+		$(".comments-modal").removeClass("is-active");
+	});
 });

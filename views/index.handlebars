@@ -15,7 +15,7 @@
     	</div>
 		<br>
 		{{!-- Scrape Button --}}
-	  	<button class="button is-primary" id="scrape">Scrape</button>
+	  	<button class="button is-primary is-pulled-right" id="scrape">Scrape</button>
   	</div>
 </section>
 
@@ -58,12 +58,14 @@
 
 <div class="container" id="articles-container">
 	{{#each results}}
-		<h3 class="article-category">{{this.category}}</h3>
-		<h2 class="is-large">{{this.title}}</h2>
+		<h3 class="article-category text-muted">{{this.category}}</h3>
+		<h2 class="is-large">
+			<p><strong>{{this.title}}</strong></p>
+		</h2>
 		<p>{{this.summary}}</p>
 
 		<a href={{this.link}} target="_blank">
-			<button class="button is-primary">
+			<button class="button is-primary is-pulled-right">
 			See Full Article</button>
 		</a>
 
