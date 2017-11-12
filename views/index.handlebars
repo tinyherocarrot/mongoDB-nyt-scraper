@@ -20,39 +20,42 @@
 </section>
 
 {{!-- scrape success notification --}}
-<div class="notification is-success">
-  <button class="delete"></button>
+<div class="notification is-success scrape-success">
   New articles scraped!
   {{!-- TODO: show how many articles were scraped --}}
+  <a href="/">
+  	<button class="button is-pulled-right refresh">OK</button>
+  </a>
 </div>
 
 {{!-- scrape fail notification --}}
-<div class="notification is-warning">
-  <button class="delete"></button>
+<div class="notification is-warning scrape-fail">
   No new articles to scrape.
+  <a href="/">
+  	<button class="button is-pulled-right refresh">OK</button>
+  </a>
 </div>
 
 {{!-- Comment Modal --}}
 <div class="modal comments-modal">
 	<div class="modal-background"></div>
-	<div class="modal-content">
-	<!-- Any other Bulma elements you want -->
-		<div class="container" id="comments-container">
-			{{#if result.comments.length}}
-				{{#each result.comments}}
-					<p>{{this.body}}</p>
-					{{!-- TODO: show when comment was posted --}}
-				{{/each}}
-			{{else}}
-				<p class="text-muted">Be the first to comment!</p>
-			{{/if}}
-		</div>
-		<form action="/comment" method="POST">
-			<label for="textarea">Your Bio</label>
-          	<textarea class="form-control form-box-style" id="inputBio" rows="3" name="comment-body"></textarea>
-			<button type="submit" class="button is-primary">Submit</button>
-		</form>
-	</div>
+	<div class="modal-card">
+    
+	    <section class="modal-card-body">
+	      	<div class="container" id="comments-container">
+				
+				{{!-- TODO: show when comment was posted --}}
+				
+			</div>
+			<form >
+				<label for="textarea" class="text-muted">Comment</label>
+				<textarea class="textarea" rows="3" name="comment_body"></textarea>
+				<button type="submit" class="button is-primary">Submit</button>
+			</form>
+	    </section>
+    
+  	</div>
+	
 	<button class="modal-close is-large" aria-label="close"></button>
 </div>
 

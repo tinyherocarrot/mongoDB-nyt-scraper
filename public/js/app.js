@@ -3,7 +3,7 @@ $(document).ready(function() {
 
 	// make GET request to scrap route, then show success notification
 	$(document).on("click", "#scrape", function() {
-		console.log("delete was clicked");
+		console.log("scrape was clicked");
 		$.ajax({
 			url: "/scrape",
 			type: "GET"
@@ -21,8 +21,8 @@ $(document).ready(function() {
 			});
 	});
 	// Closes scrape success messages
-	$(document).on("click", ".delete", function() {
-		console.log("delete was clicked");
+	$(document).on("click", ".refresh", function() {
+		console.log("refresh was clicked");
 		$(this)
 			.parent()
 			.hide();
@@ -31,14 +31,30 @@ $(document).ready(function() {
 	$(document).on("click", ".toggle-comments", function() {
 		var id = $(this).attr("data-id");
 		console.log("show comments was clicked");
-		$(".comments-modal").addClass("is-active");
-		// $.ajax({
-		// 	url: `/comments/${id}`,
-		// 	type: "GET"
-		// })
-		// .done(results => {
-
-		// })
+		$.ajax({
+			url: `/comments/${id}`,
+			type: "GET"
+		}).done(results => {
+			console.log(results);
+			// First, clear comments container
+			$("#comments-container").empty();
+			// populate modal with saved comments, if exists.
+			if (results.comments.length) {
+				results.comments.forEach(comment => {
+					console.log(comment);
+					$("#comments-container").append(
+						`<p>${comment.body}</p><br>`
+					);
+				});
+			} else {
+				// Else prompt user to enter the first comment
+				$("#comments-container").append(
+					`<p class="text-muted">Be the first to comment!</p>`
+				);
+			}
+			// then display modal
+			$(".comments-modal").addClass("is-active");
+		});
 	});
 	// Close comments modal
 	$(document).on("click", ".modal-close", function() {
