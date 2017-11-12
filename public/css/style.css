@@ -1,0 +1,10 @@
+.notification {
+	display: none;
+}
+.delete {
+	margin: 5px;
+}
+.article-category {
+	text-transform: uppercase;
+}
+

@@ -10,7 +10,7 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 
 // Require all models
-// var db = require("./models");
+var db = require("./models");
 
 var port = process.env.PORT || 3000;
 
@@ -26,6 +26,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Use express.static to serve the public folder as a static directory
 app.use(express.static("public"));
 
+// Set up Handlebars
+var exphbs = require("express-handlebars");
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
@@ -37,6 +42,15 @@ mongoose.connect(MONGODB_URI, {
 
 // Routes
 // -----------------------------------
+app.get("/", function(req, res) {
+	db.Article
+		.find()
+		.populate("comment")
+		.then(results => {
+			// res.json(results);
+			res.render("index", { results: results });
+		});
+});
 
 // A GET route for scraping The Atlantic homepage
 app.get("/scrape", function(req, res) {
@@ -45,7 +59,7 @@ app.get("/scrape", function(req, res) {
 		// Then, we load that into cheerio and save it to $ for a shorthand selector
 		var $ = cheerio.load(response.data);
 		// Now, we grab every article tag, and do the following:
-		$("article").each(function(i, element) {
+		$("div.c-tease__content").each(function(i, element) {
 			// Save an empty result object
 			var result = {};
 
@@ -61,7 +75,8 @@ app.get("/scrape", function(req, res) {
 				.children("p.o-dek")
 				.text();
 			result.link = $(this)
-				.children("h3.o-hed a")
+				.children("h3.o-hed")
+				.children("a")
 				.attr("href");
 
 			// Create a new Article using the `result` object built from scraping

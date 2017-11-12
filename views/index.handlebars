@@ -1,0 +1,76 @@
+<section class="hero is-dark">
+ 	<div class="hero-body">
+		
+
+    	<div class="container">
+      		<h1 class="title">
+        		The Atlantic News Scraper
+      		</h1>
+      		<h2 class="subtitle">
+        		Scrape articles. 
+        		<br>Leave comments. 
+        		<br>Profit. 
+        		<br>Repeat.  
+      		</h2>
+    	</div>
+		<br>
+		{{!-- Scrape Button --}}
+	  	<button class="button is-primary" id="scrape">Scrape</button>
+  	</div>
+</section>
+
+{{!-- scrape success notification --}}
+<div class="notification is-success">
+  <button class="delete"></button>
+  New articles scraped!
+  {{!-- TODO: show how many articles were scraped --}}
+</div>
+
+{{!-- scrape fail notification --}}
+<div class="notification is-warning">
+  <button class="delete"></button>
+  No new articles to scrape.
+</div>
+
+{{!-- Comment Modal --}}
+<div class="modal comments-modal">
+	<div class="modal-background"></div>
+	<div class="modal-content">
+	<!-- Any other Bulma elements you want -->
+		<div class="container" id="comments-container">
+			{{#if result.comments.length}}
+				{{#each result.comments}}
+					<p>{{this.body}}</p>
+					{{!-- TODO: show when comment was posted --}}
+				{{/each}}
+			{{else}}
+				<p class="text-muted">Be the first to comment!</p>
+			{{/if}}
+		</div>
+		<form action="/comment" method="POST">
+			<label for="textarea">Your Bio</label>
+          	<textarea class="form-control form-box-style" id="inputBio" rows="3" name="comment-body"></textarea>
+			<button type="submit" class="button is-primary">Submit</button>
+		</form>
+	</div>
+	<button class="modal-close is-large" aria-label="close"></button>
+</div>
+
+<div class="container" id="articles-container">
+	{{#each results}}
+		<h3 class="article-category">{{this.category}}</h3>
+		<h2 class="is-large">{{this.title}}</h2>
+		<p>{{this.summary}}</p>
+
+		<a href={{this.link}} target="_blank">
+			<button class="button is-primary">
+			See Full Article</button>
+		</a>
+
+		<a class="toggle-comments" data-id= {{this._id}}> 
+			<i class="fa fa-comment-o" aria-hidden="true"></i>
+        </a>
+
+        <hr>
+	{{/each}}
+</div
