@@ -1,7 +1,3 @@
-button,
-.toggle-comments {
-	margin-top: 8px;
-}
 .notification {
 	display: none;
 }
@@ -12,14 +8,25 @@ button,
 	text-transform: uppercase;
 	font-size: smaller;
 }
-.modal {
-	overflow: hidden;
+.level {
+	margin-top: 0.75rem;
 }
 .modal-content {
 	background-color: white;
 	margin: 10px;
 }
+#comment_body {
+	margin: 10px 0px;
+}
 
 #articles-container {
-	padding: 20px;
+	padding: 45px 75px;
+}
+
+/*Media Queries*/
+@media only screen and (max-width: 768px) {
+	/* For mobile phones: */
+	#articles-container {
+		padding: 20px;
+	}
 }

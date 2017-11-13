@@ -61,6 +61,8 @@ app.get("/scrape", function(req, res) {
 		// Then, we load that into cheerio and save it to $ for a shorthand selector
 		.then(function(response) {
 			var $ = cheerio.load(response.data);
+			// Track number of articles scraped
+			var scrape_count = 0;
 			// Now, we grab every article tag, and do the following:
 			$("div.c-tease__content").each(function(i, element) {
 				// Save an empty result object
@@ -86,14 +88,27 @@ app.get("/scrape", function(req, res) {
 				db.Article
 					.create(result)
 					.then(function(dbArticle) {
-						// If we were able to successfully scrape and save an Article, send a message to the client
-						res.send("Scrape Complete");
+						// Increment number of articles scraped.
+						scrape_count++;
+						console.log(scrape_count);
+						// console.log(dbArticle);
+						// If we were able to successfully scrape and save an Article, total number scraped to the client
+						res.json(scrape_count);
 					})
 					.catch(function(err) {
-						// If an error occurred, send it to the client
-						res.json(err);
+						// If an 11000 error occurred, return false to client
+						if (err.code === 11000) {
+							console.log("duplicates detected!!");
+							res.json(scrape_count);
+							// return false;
+							// otherwise return error to client
+						} else {
+							res.json(err);
+						}
 					});
+				// return scrape_count;
 			});
+			// res.json(scrape_count);
 		});
 });
 
@@ -101,7 +116,6 @@ app.post("/comments/:id", function(req, res) {
 	console.log("Got: ", req.body, req.method, req.path);
 
 	db.Comment
-		// .create({ body: req.body.comment_body })
 		.create(req.body)
 		.then(dbComment => {
 			console.log(dbComment);
@@ -123,12 +137,11 @@ app.post("/comments/:id", function(req, res) {
 app.get("/comments/:id", function(req, res) {
 	// Finds one article using the req.params.id,
 	// and run the populate method with "comment",
-	// then responds with the article with the comments included
+	// then responds with the article with the comments included, in newest first order
 	console.log("getting article and comments");
 	db.Article
 		.findOne({ _id: req.params.id })
-		.populate("comments")
-		// .sort({ _id: "desc" })
+		.populate({ path: "comments", options: { sort: { _id: -1 } } })
 		.then(dbArticles => {
 			console.log(dbArticles);
 			res.json(dbArticles);

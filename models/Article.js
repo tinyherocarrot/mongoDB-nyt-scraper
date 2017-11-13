@@ -8,7 +8,8 @@ var ArticleSchema = new Schema({
   },
   title: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   summary: {
     type: String,

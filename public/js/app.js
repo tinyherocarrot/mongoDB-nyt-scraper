@@ -8,13 +8,18 @@ $(document).ready(function() {
 			url: "/scrape",
 			type: "GET"
 		})
-			.done(function() {
-				console.log("success");
-				$(".scrape-success").show();
+			.done(function(scrape_count) {
+				console.log(scrape_count);
+				if (scrape_count === 0) {
+					console.log("no new articles");
+					$(".scrape-fail").show();
+				} else {
+					// $("#scrape-count").text(scrape_count);
+					$(".scrape-success").show();
+				}
 			})
 			.fail(function() {
 				console.log("error");
-				$(".scrape-fail").show();
 			})
 			.always(function() {
 				console.log("complete");
@@ -24,6 +29,9 @@ $(document).ready(function() {
 	$(document).on("click", ".refresh", function() {
 		console.log("refresh was clicked");
 		$(this)
+			.parent()
+			.parent()
+			.parent()
 			.parent()
 			.hide();
 	});
@@ -43,13 +51,15 @@ $(document).ready(function() {
 				results.comments.forEach(comment => {
 					console.log(comment);
 					$("#comments-container").append(
-						`<p>${comment.body}</p><br>`
+						`<p>${comment.body}</p><span class="has-text-grey-light">${comment.created_at}</span><br><br>`
 					);
 				});
 			} else {
 				// Else prompt user to enter the first comment
 				$("#comments-container").append(
-					`<p class="text-muted">Be the first to comment!</p>`
+					`<p class="text-muted">
+						<small>Be the first to comment!</small>
+					</p><br>`
 				);
 			}
 			// Set comment submit buttons data-id to article's id
@@ -75,7 +85,7 @@ $(document).ready(function() {
 			}
 		}).done(results => {
 			console.log(results);
-			$("#comments-container").prepend(`<p>${body}</p><br>`);
+			// $("#comments-container").prepend(`<p>${body}</p><br>`);
 		});
 	});
 	// Close comments modal
