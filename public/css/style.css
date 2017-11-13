@@ -19,12 +19,14 @@
 	margin: 10px 0px;
 }
 
-#articles-container {
-	padding: 45px 75px;
+/*Media Queries*/
+@media (min-width: 500px) {
+	#articles-container {
+		padding: 45px 75px;
+	}
 }
 
-/*Media Queries*/
-@media only screen and (max-width: 768px) {
+@media screen and (max-width: 499px) {
 	/* For mobile phones: */
 	#articles-container {
 		padding: 20px;

@@ -57,7 +57,7 @@ $(document).ready(function() {
 			} else {
 				// Else prompt user to enter the first comment
 				$("#comments-container").append(
-					`<p class="text-muted">
+					`<p class="text-muted" id="first-commenter">
 						<small>Be the first to comment!</small>
 					</p><br>`
 				);
@@ -85,7 +85,12 @@ $(document).ready(function() {
 			}
 		}).done(results => {
 			console.log(results);
-			// $("#comments-container").prepend(`<p>${body}</p><br>`);
+			$("#comment_body").empty();
+			$("#first-commenter").text("");
+			$("#comments-container").prepend(
+				`<p class="has-text-grey-light">${Date().substring(4, 31)}</p>`
+			);
+			$("#comments-container").prepend(`<p>${body}</p><br>`);
 		});
 	});
 	// Close comments modal
